@@ -1,0 +1,157 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+local Window = OrionLib:MakeWindow({Name = "Sandbox Hatchers X By VernyHub", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+
+local Tab = Window:MakeTab({
+	Name = "Main",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "Rebirth"
+})
+
+
+Tab:AddSlider({
+	Name = "Time to wait every rebirth and egg",
+	Min = 1,
+	Max = 120,
+	Default = 5,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "Seconds",
+	Callback = function(Value)
+		_G.time = Value;
+	end    
+})
+
+
+
+
+Tab:AddDropdown({
+	Name = "Select Rebirth",
+	Default = " ",
+	Options = {"Rebirth1", "Rebirth2", "Rebirth3", "Rebirth4", "Rebirth5", "Rebirth6", "Rebirth7",},
+	Callback = function(Value)
+		_G.rebirth = Value;
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Auto Rebirth(OP!!!)",
+	Default = false,
+	Callback = function(Value)
+		_G.autoreb = Value;
+	end    
+})
+
+task.spawn(function()
+    while wait() do
+        if _G.autoreb then
+            if _G.time then
+                if _G.rebirth ~= nil then
+                    game:GetService("ReplicatedStorage").Events.Rebirth:FireServer(game:GetService("Players").LocalPlayer.PlayerGui.MainUI.RebirthFrame.Holder[_G.rebirth].Cost,game:GetService("Players").LocalPlayer.PlayerGui.MainUI.RebirthFrame.Holder[_G.rebirth].Amount,true)
+                    wait(_G.time)
+                end
+            end
+        end
+    end
+end)
+
+local Section = Tab:AddSection({
+	Name = "Auto Egg"
+})
+
+
+local eggsTable = {}
+
+for i,v in ipairs(game:GetService("Workspace").Eggs:GetChildren()) do
+    if v:IsA("Model") then
+        table.insert(eggsTable, v.Name)
+    end
+end
+
+
+
+
+Tab:AddDropdown({
+	Name = "Select Egg",
+	Default = " ",
+	Options = eggsTable,
+	Callback = function(Value)
+		_G.egg = Value;
+	end    
+})
+
+Tab:AddDropdown({
+	Name = "Select Amount To Open",
+	Default = " ",
+	Options = {"Buy1", "Buy3", "Buy8"},
+	Callback = function(Value)
+        _G.amount = Value;
+	end    
+})
+
+
+Tab:AddToggle({
+	Name = "Auto Open Egg",
+	Default = false,
+	Callback = function(Value)
+		_G.autoegg = Value;
+	end    
+})
+
+task.spawn(function()
+    while wait() do
+        if _G.autoegg then
+            if _G.time then
+                if _G.amount then
+                    if _G.egg ~= nil then
+                        game:GetService("ReplicatedStorage").GameClient.Events.RemoteFunction.BuyEgg:InvokeServer(_G.egg,_G.amount)
+                        wait(_G.time)
+                    end
+                end
+            end
+        end
+    end
+end)
+
+local Tab = Window:MakeTab({
+	Name = "Misc",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddSlider({
+	Name = "Change WalkSpeed",
+	Min = 50,
+	Max = 500,
+	Default = 5,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "Speed",
+	Callback = function(Value)
+		_G.WSV = Value;
+	end    
+})
+
+
+Tab:AddToggle({
+	Name = "Toggle WalkSpeed",
+	Default = false,
+	Callback = function(Value)
+		_G.WS = Value;
+	end    
+})
+
+task.spawn(function()
+	while wait() do
+		if _G.WS then
+			if _G.WSV ~= nil then
+				game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.WSV
+				wait(1)
+			end
+		end
+	end
+end)
