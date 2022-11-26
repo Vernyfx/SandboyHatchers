@@ -155,3 +155,5 @@ task.spawn(function()
 		end
 	end
 end)
+
+Tab:AddParagraph("Credits Below:","!IsagiYoichi#7765")
